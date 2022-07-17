@@ -16,9 +16,6 @@ export default function App() {
     return <CircularProgress />;
   }
 
-  if (!idToken) {
-    return <LoginSignup />;
-  }
   const client = Connection(idToken);
   return (
     <ApolloProvider client={client}>
