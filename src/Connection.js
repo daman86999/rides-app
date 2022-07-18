@@ -5,7 +5,7 @@ const createApolloClient = (authToken) => {
     link: new HttpLink({
       uri: `${process.env.REACT_APP_GRAPHQL_API}`,
       headers: {
-        Authorization: `Bearer ${authToken}`,
+        'x-hasura-admin-secret': process.env.REACT_APP_HASURA_ADMIN_SECRET_KEY,
       },
     }),
     cache: new InMemoryCache(),
