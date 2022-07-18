@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import {
   Button,
+  CircularProgress,
   makeStyles,
   MenuItem,
   Select,
@@ -43,8 +44,16 @@ const Cabs = ({ driverid }) => {
     const value = e.target.value;
     setCabDetials((prev) => ({ ...prev, [name]: value }));
   };
-  const [updateData] = useMutation(INSERT_CAB);
-
+  const [updateData, { error, loading }] = useMutation(INSERT_CAB);
+  if (error) {
+    sendDataToSentry({
+      name: 'GraphQL Error',
+      message: 'INSERT_CAB query failed',
+      tags: { severity: 'CRITICAL' },
+      extra: [{ type: 'errorEncounter', error }],
+    });
+    return <div>Error!</div>;
+  }
   const handleUpdate = () => {
     const data = {
       ...cabDetails,
@@ -136,7 +145,11 @@ const Cabs = ({ driverid }) => {
         className={classes.submit}
         onClick={handleUpdate}
       >
-        Update Cab
+        {loading ? (
+          <CircularProgress style={{ color: 'white' }} />
+        ) : (
+          'Update Cab'
+        )}
       </Button>
     </div>
   );

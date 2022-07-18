@@ -12,6 +12,7 @@ import { GET_AVAILABLE_RIDES } from '../queries/GET_AVAILABLE_RIDES';
 import { ACCEPT_RIDE } from '../queries';
 import { useAuth0 } from '@auth0/auth0-react';
 import { checkValidArray } from '../utils/validator';
+import { sendDataToSentry } from '..';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,7 +40,12 @@ const Dashboard = () => {
     return <CircularProgress />;
   }
   if (error) {
-    console.error(error);
+    sendDataToSentry({
+      name: 'GraphQL Error',
+      message: 'GET_AVAILABLE_RIDES query failed',
+      tags: { severity: 'CRITICAL' },
+      extra: [{ type: 'errorEncounter', error }],
+    });
     return <div>Error!</div>;
   }
 

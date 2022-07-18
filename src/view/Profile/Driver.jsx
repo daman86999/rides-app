@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import {
   Button,
+  CircularProgress,
   makeStyles,
   MenuItem,
   Select,
@@ -44,8 +45,16 @@ const Driver = ({ email }) => {
     setDriverDetails((prev) => ({ ...prev, [name]: value }));
   };
 
-  const [updateData] = useMutation(UPDATE_DRIVER);
-
+  const [updateData, { loading, error }] = useMutation(UPDATE_DRIVER);
+  if (error) {
+    sendDataToSentry({
+      name: 'GraphQL Error',
+      message: 'UPDATE_DRIVER query failed',
+      tags: { severity: 'CRITICAL' },
+      extra: [{ type: 'errorEncounter', error }],
+    });
+    return <div>Error!</div>;
+  }
   const handleUpdate = () => {
     const data = {
       ...driverDetails,
@@ -55,6 +64,7 @@ const Driver = ({ email }) => {
       variables: data,
     });
   };
+
   const { drivername, driverphonenumber, status } = driverDetails;
   return (
     <div>
@@ -120,7 +130,11 @@ const Driver = ({ email }) => {
         className={classes.submit}
         onClick={handleUpdate}
       >
-        Update Driver
+        {loading ? (
+          <CircularProgress style={{ color: 'white' }} />
+        ) : (
+          'Update Driver'
+        )}
       </Button>
     </div>
   );
