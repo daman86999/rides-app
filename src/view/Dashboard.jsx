@@ -11,6 +11,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import { GET_AVAILABLE_RIDES } from '../queries/GET_AVAILABLE_RIDES';
 import { ACCEPT_RIDE } from '../queries';
 import { useAuth0 } from '@auth0/auth0-react';
+import { checkValidArray } from '../utils/validator';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -56,36 +57,38 @@ const Dashboard = () => {
         <Typography>Rides Available</Typography>
       </Grid>
       <Grid container direction="row">
-        {data?.rides?.map((ride, i) => {
-          return (
-            <Card key={i} className={classes.card}>
-              <div className={classes.displayFlex}>
-                <div>id</div>
-                <div>{ride?.id}</div>
-              </div>
-              <div className={classes.displayFlex}>
-                <div>Ride Start Location</div>
-                <div>{ride?.ridestartlocation}</div>
-              </div>
-              <div className={classes.displayFlex}>
-                <div>Ride End Location</div>
-                <div>{ride?.rideendlocation}</div>
-              </div>
-              <div className={classes.displayFlex}>
-                <div>Ride Start time</div>
-                <div>{ride?.ridestarttime}</div>
-              </div>
-              <Button
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-                onClick={() => handleAccept(ride?.id)}
-              >
-                Accept
-              </Button>
-            </Card>
-          );
-        })}
+        {checkValidArray(data?.rides)
+          ? data?.rides?.map((ride, i) => {
+              return (
+                <Card key={i} className={classes.card}>
+                  <div className={classes.displayFlex}>
+                    <div>id</div>
+                    <div>{ride?.id}</div>
+                  </div>
+                  <div className={classes.displayFlex}>
+                    <div>Ride Start Location</div>
+                    <div>{ride?.ridestartlocation}</div>
+                  </div>
+                  <div className={classes.displayFlex}>
+                    <div>Ride End Location</div>
+                    <div>{ride?.rideendlocation}</div>
+                  </div>
+                  <div className={classes.displayFlex}>
+                    <div>Ride Start time</div>
+                    <div>{ride?.ridestarttime}</div>
+                  </div>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    className={classes.submit}
+                    onClick={() => handleAccept(ride?.id)}
+                  >
+                    Accept
+                  </Button>
+                </Card>
+              );
+            })
+          : 'nill'}
       </Grid>
     </Grid>
   );
