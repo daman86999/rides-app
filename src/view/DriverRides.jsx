@@ -8,7 +8,6 @@ import {
   Grid,
   Typography,
 } from '@material-ui/core';
-import { useAuth0 } from '@auth0/auth0-react';
 import { useMutation, useQuery } from '@apollo/client';
 import { checkValidArray } from '../utils/validator';
 import { sendDataToSentry } from '..';
@@ -30,9 +29,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const DriverRides = () => {
-  const { user } = useAuth0();
-  const { sub: driverid } = user;
+const DriverRides = ({ driverid }) => {
   const classes = useStyles();
   const { data, error, loading } = useQuery(GET_DRIVER_RIDES, {
     variables: { driverid },

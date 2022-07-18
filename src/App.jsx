@@ -8,7 +8,7 @@ import { RoutesAll } from './routes/Routes';
 import Navbar from './components/Navbar';
 
 export default function App() {
-  const { isLoading, isAuthenticated } = useAuth0();
+  const { isLoading, isAuthenticated, user } = useAuth0();
 
   if (isLoading) {
     return <CircularProgress />;
@@ -19,7 +19,7 @@ export default function App() {
     <ApolloProvider client={client}>
       <div>
         {isAuthenticated ? <Navbar /> : null}
-        <RoutesAll isAuthenticated={isAuthenticated} />
+        <RoutesAll isAuthenticated={isAuthenticated} user={user} />
       </div>
     </ApolloProvider>
   );

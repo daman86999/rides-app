@@ -10,7 +10,6 @@ import {
 import { useMutation, useQuery } from '@apollo/client';
 import { GET_AVAILABLE_RIDES } from '../queries/GET_AVAILABLE_RIDES';
 import { ACCEPT_RIDE } from '../queries';
-import { useAuth0 } from '@auth0/auth0-react';
 import { checkValidArray } from '../utils/validator';
 import { sendDataToSentry } from '..';
 
@@ -31,9 +30,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Dashboard = () => {
-  const { user } = useAuth0();
-  const { sub: driverid } = user;
+const Dashboard = ({ driverid }) => {
   const classes = useStyles();
   const { data, error, loading } = useQuery(GET_AVAILABLE_RIDES);
   if (loading) {
