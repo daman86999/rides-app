@@ -14,7 +14,7 @@ import { checkValidArray } from '../utils/validator';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    margin: theme.spacing(2),
+    margin: theme.spacing(2, 0),
   },
   displayFlex: {
     display: 'flex',

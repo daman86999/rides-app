@@ -8,8 +8,8 @@ import { RoutesAll } from './routes/Routes';
 import Navbar from './components/Navbar';
 
 export default function App() {
-  const idToken = useAccessToken();
   const { isLoading, isAuthenticated } = useAuth0();
+  const idToken = useAccessToken();
   if (isLoading) {
     return <CircularProgress />;
   }
