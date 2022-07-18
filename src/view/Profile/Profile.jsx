@@ -6,12 +6,16 @@ import Driver from './Driver';
 import Cabs from './Cab';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
+  root2: {
     height: '100vh',
+  },
+  root: {
+    margin: theme.spacing(2, 0),
   },
   paper: {
     display: 'flex',
     flexDirection: 'column',
+    margin: theme.spacing(2, 2),
   },
 
   submit: {
@@ -32,12 +36,12 @@ const Profile = () => {
   const classes = useStyles();
 
   return (
-    <div>
+    <div className={classes.root}>
       <Grid
         container
         component="main"
         justifyContent={'space-between'}
-        className={classes.root}
+        className={classes.root2}
       >
         <Grid item xs={8}>
           <div className={classes.paper}>
