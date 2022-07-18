@@ -1,17 +1,20 @@
 import React from 'react';
-import { useAuth0 } from '@auth0/auth0-react';
 import { Grid, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Driver from './Driver';
 import Cabs from './Cab';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
+  root2: {
     height: '100vh',
+  },
+  root: {
+    margin: theme.spacing(2, 0),
   },
   paper: {
     display: 'flex',
     flexDirection: 'column',
+    margin: theme.spacing(2, 2),
   },
 
   submit: {
@@ -25,19 +28,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Profile = () => {
-  const { user } = useAuth0();
-  const { email, sub: driverid } = user;
-
+const Profile = ({ email, driverid }) => {
   const classes = useStyles();
 
   return (
-    <div>
+    <div className={classes.root}>
       <Grid
         container
         component="main"
         justifyContent={'space-between'}
-        className={classes.root}
+        className={classes.root2}
       >
         <Grid item xs={8}>
           <div className={classes.paper}>
