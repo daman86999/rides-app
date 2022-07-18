@@ -17,6 +17,18 @@ Sentry.init({
   tracesSampleRate: 1.0,
 });
 
+export const sendDataToSentry = ({ name, message, extra, tags }) => {
+  const error = new Error();
+  error.message = message;
+  error.name = name;
+  if (!tags) tags = {};
+
+  Sentry.captureException(error, {
+    tags,
+    extra,
+  });
+};
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
