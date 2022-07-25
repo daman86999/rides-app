@@ -35,28 +35,33 @@ const Dashboard = () => {
   const { user } = useAuth0();
   const { sub: driverid } = user;
   const classes = useStyles();
-  const { data, error, loading } = useQuery(GET_AVAILABLE_RIDES);
+  const { data, error, loading, refetch } = useQuery(GET_AVAILABLE_RIDES);
+  const [acceptride, { loading: mutationLoading, error: mutationError }] =
+    useMutation(ACCEPT_RIDE, {
+      onCompleted: refetch,
+    });
+
   if (loading) {
     return <CircularProgress />;
   }
-  if (error) {
+
+  if (error || mutationError) {
     sendDataToSentry({
       name: 'GraphQL Error',
-      message: 'GET_AVAILABLE_RIDES query failed',
+      message: `${error ? 'GET_AVAILABLE_RIDES' : 'ACCEPT_RIDE'} query failed`,
       tags: { severity: 'CRITICAL' },
       extra: [{ type: 'errorEncounter', error }],
     });
     return <div>Error!</div>;
   }
 
-  // const [acceptride] = useMutation(ACCEPT_RIDE);
+  const handleAccept = (id) => {
+    const data = { id, driverid };
+    acceptride({
+      variables: data,
+    });
+  };
 
-  // const handleAccept = (id) => {
-  //   const data = { id, driverid };
-  //   acceptride({
-  //     variables: data,
-  //   });
-  // };
   return (
     <Grid container direction="column" className={classes.root}>
       <Grid item>
@@ -89,7 +94,11 @@ const Dashboard = () => {
                     className={classes.submit}
                     onClick={() => handleAccept(ride?.id)}
                   >
-                    Accept
+                    {mutationLoading ? (
+                      <CircularProgress style={{ color: 'white' }} />
+                    ) : (
+                      'Accept'
+                    )}
                   </Button>
                 </Card>
               );

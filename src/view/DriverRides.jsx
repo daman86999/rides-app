@@ -34,16 +34,22 @@ const DriverRides = () => {
   const { user } = useAuth0();
   const { sub: driverid } = user;
   const classes = useStyles();
-  const { data, error, loading } = useQuery(GET_DRIVER_RIDES, {
+  const { data, error, loading, refetch } = useQuery(GET_DRIVER_RIDES, {
     variables: { driverid },
   });
+  const [endRide, { loading: mutationLoading, error: mutationError }] =
+    useMutation(END_RIDE, {
+      onCompleted: refetch,
+    });
+
   if (loading) {
     return <CircularProgress />;
   }
-  if (error) {
+
+  if (error || mutationError) {
     sendDataToSentry({
       name: 'GraphQL Error',
-      message: 'GET_DRIVER_RIDES query failed',
+      message: `${error ? 'GET_DRIVER_RIDES' : 'END_RIDE'} query failed`,
       tags: { severity: 'CRITICAL' },
       extra: [{ type: 'errorEncounter', error }],
     });
@@ -57,14 +63,17 @@ const DriverRides = () => {
     if (ride?.rideendtime) return true;
   });
 
-  // const [endRide] = useMutation(END_RIDE);
+  const handleEnd = (id) => {
+    const data = {
+      id,
+      rideendtime: new Date(Date.now()).toISOString(),
+      driverid,
+    };
+    endRide({
+      variables: data,
+    });
+  };
 
-  // const handleEnd = (id) => {
-  //   const data = { id, rideendtime: new Date(), driverid };
-  //   endRide({
-  //     variables: data,
-  //   });
-  // };
   return (
     <Grid container direction="column" className={classes.root}>
       <Grid item>
@@ -97,7 +106,11 @@ const DriverRides = () => {
                     className={classes.submit}
                     onClick={() => handleEnd(ride?.id)}
                   >
-                    End ride
+                    {mutationLoading ? (
+                      <CircularProgress style={{ color: 'white' }} />
+                    ) : (
+                      'End ride'
+                    )}
                   </Button>
                 </Card>
               );
