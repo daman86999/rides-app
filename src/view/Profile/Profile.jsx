@@ -1,4 +1,5 @@
 import React from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
 import { Grid, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Driver from './Driver';
@@ -28,7 +29,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Profile = ({ email, driverid }) => {
+const Profile = () => {
+  const { user } = useAuth0();
+  const { email, sub: driverid } = user;
+
   const classes = useStyles();
 
   return (

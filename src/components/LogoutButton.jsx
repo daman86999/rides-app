@@ -7,7 +7,7 @@ const LogoutButton = () => {
   return (
     <Button
       variant="contained"
-      color="primary"
+      color="secondary"
       onClick={() =>
         logout({
           returnTo: process.env.REACT_APP_ALLOWED_LOGOUT,

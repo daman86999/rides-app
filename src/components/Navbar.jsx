@@ -29,6 +29,10 @@ const useStyles = makeStyles((theme) => ({
   logout: {
     marginLeft: theme.spacing(20),
   },
+  flex: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
 }));
 
 const Navbar = () => {
@@ -37,7 +41,7 @@ const Navbar = () => {
   return (
     <AppBar position="static">
       <CssBaseline />
-      <Toolbar>
+      <Toolbar className={classes.flex}>
         <Typography variant="h6" className={classes.logo}>
           Rides App
         </Typography>

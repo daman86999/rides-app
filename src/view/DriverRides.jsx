@@ -8,6 +8,7 @@ import {
   Grid,
   Typography,
 } from '@material-ui/core';
+import { useAuth0 } from '@auth0/auth0-react';
 import { useMutation, useQuery } from '@apollo/client';
 import { checkValidArray } from '../utils/validator';
 import { sendDataToSentry } from '..';
@@ -29,18 +30,26 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const DriverRides = ({ driverid }) => {
+const DriverRides = () => {
+  const { user } = useAuth0();
+  const { sub: driverid } = user;
   const classes = useStyles();
-  const { data, error, loading } = useQuery(GET_DRIVER_RIDES, {
+  const { data, error, loading, refetch } = useQuery(GET_DRIVER_RIDES, {
     variables: { driverid },
   });
+  const [endRide, { loading: mutationLoading, error: mutationError }] =
+    useMutation(END_RIDE, {
+      onCompleted: refetch,
+    });
+
   if (loading) {
     return <CircularProgress />;
   }
-  if (error) {
+
+  if (error || mutationError) {
     sendDataToSentry({
       name: 'GraphQL Error',
-      message: 'GET_DRIVER_RIDES query failed',
+      message: `${error ? 'GET_DRIVER_RIDES' : 'END_RIDE'} query failed`,
       tags: { severity: 'CRITICAL' },
       extra: [{ type: 'errorEncounter', error }],
     });
@@ -54,14 +63,17 @@ const DriverRides = ({ driverid }) => {
     if (ride?.rideendtime) return true;
   });
 
-  // const [endRide] = useMutation(END_RIDE);
+  const handleEnd = (id) => {
+    const data = {
+      id,
+      rideendtime: new Date(Date.now()).toISOString(),
+      driverid,
+    };
+    endRide({
+      variables: data,
+    });
+  };
 
-  // const handleEnd = (id) => {
-  //   const data = { id, rideendtime: new Date(), driverid };
-  //   endRide({
-  //     variables: data,
-  //   });
-  // };
   return (
     <Grid container direction="column" className={classes.root}>
       <Grid item>
@@ -94,7 +106,11 @@ const DriverRides = ({ driverid }) => {
                     className={classes.submit}
                     onClick={() => handleEnd(ride?.id)}
                   >
-                    End ride
+                    {mutationLoading ? (
+                      <CircularProgress style={{ color: 'white' }} />
+                    ) : (
+                      'End ride'
+                    )}
                   </Button>
                 </Card>
               );
