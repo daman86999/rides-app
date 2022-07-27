@@ -3,7 +3,6 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { CircularProgress } from '@material-ui/core';
 import { ApolloProvider } from '@apollo/client';
 import Connection from './Connection';
-
 import { RoutesAll } from './routes/Routes';
 import Navbar from './components/Navbar';
 

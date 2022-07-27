@@ -64,7 +64,6 @@ const Driver = ({ email }) => {
       variables: data,
     });
   };
-
   const { drivername, driverphonenumber, status } = driverDetails;
   return (
     <div>
