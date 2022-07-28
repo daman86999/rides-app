@@ -1,9 +1,11 @@
 import React from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
-import { Grid, Typography } from '@material-ui/core';
+import { CircularProgress, Grid, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Driver from './Driver';
 import Cabs from './Cab';
+import { GET_DRIVER_INFO } from '../../queries';
+import { useQuery } from '@apollo/client';
 
 const useStyles = makeStyles((theme) => ({
   root2: {
@@ -30,10 +32,30 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Profile = () => {
-  const { user } = useAuth0();
-  const { email, sub: driverid } = user;
-
   const classes = useStyles();
+  const { user } = useAuth0();
+  const { sub: driverid } = { ...user };
+  const { data, error, loading, refetch } = useQuery(GET_DRIVER_INFO, {
+    variables: { driverid },
+  });
+
+  if (loading) {
+    return <CircularProgress />;
+  }
+
+  if (error) {
+    sendDataToSentry({
+      name: 'GraphQL Error',
+      message: `GET_DRIVER_INFO query failed`,
+      tags: { severity: 'CRITICAL' },
+      extra: [{ type: 'errorEncounter', error }],
+    });
+    return <div>Error!</div>;
+  }
+
+  const driver = data?.driver?.[0];
+  const cab = data?.driver?.[0]?.cab?.[0];
+  console.log({ data, driver, cab });
 
   return (
     <div className={classes.root}>
@@ -48,8 +70,8 @@ const Profile = () => {
             <Typography component="h1" variant="h5">
               Profile
             </Typography>
-            <Driver email={email} driverid={driverid} />
-            <Cabs driverid={driverid} />
+            <Driver driver={driver} refetch={refetch} />
+            <Cabs cab={cab} refetch={refetch} />
           </div>
         </Grid>
       </Grid>

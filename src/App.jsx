@@ -17,7 +17,7 @@ export default function App() {
   return (
     <ApolloProvider client={client}>
       <div>
-        {isAuthenticated ? <Navbar /> : null}
+        <Navbar />
         <RoutesAll isAuthenticated={isAuthenticated} />
       </div>
     </ApolloProvider>

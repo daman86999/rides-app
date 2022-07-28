@@ -30,22 +30,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Driver = ({ email }) => {
+const Driver = ({ driver, refetch }) => {
   const classes = useStyles();
 
   const [driverDetails, setDriverDetails] = useState({
-    drivername: '',
-    driverphonenumber: '',
-    status: 'available',
+    drivername: driver?.drivername ?? '',
+    email: driver?.email ?? '',
+    driverphonenumber: driver?.driverphonenumber ?? '',
+    status: driver?.status ?? 'available',
   });
 
-  const handleOnChangefordriver = (e) => {
-    const name = e.target.name;
-    const value = e.target.value;
-    setDriverDetails((prev) => ({ ...prev, [name]: value }));
-  };
+  const [updateData, { loading, error }] = useMutation(UPDATE_DRIVER, {
+    onCompleted: refetch,
+  });
 
-  const [updateData, { loading, error }] = useMutation(UPDATE_DRIVER);
   if (error) {
     sendDataToSentry({
       name: 'GraphQL Error',
@@ -55,16 +53,25 @@ const Driver = ({ email }) => {
     });
     return <div>Error!</div>;
   }
+
+  const handleOnChangefordriver = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    setDriverDetails((prev) => ({ ...prev, [name]: value }));
+  };
+
   const handleUpdate = () => {
     const data = {
       ...driverDetails,
-      email,
+      driverid: driver?.driverid,
     };
     updateData({
       variables: data,
     });
   };
-  const { drivername, driverphonenumber, status } = driverDetails;
+
+  const { drivername, driverphonenumber, email, status } = driverDetails;
+
   return (
     <div>
       <div className={classes.displayFlex}>
@@ -103,6 +110,7 @@ const Driver = ({ email }) => {
           margin="normal"
           fullWidth
           required
+          inputProps={{ inputmode: 'numeric', pattern: '^[0-9]{10}$' }}
           id="driverphonenumber"
           name="driverphonenumber"
           onChange={handleOnChangefordriver}
