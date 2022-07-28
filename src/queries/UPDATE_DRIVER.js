@@ -6,18 +6,14 @@ export const UPDATE_DRIVER = gql`
     $driverphonenumber: numeric = ""
     $email: String = ""
     $status: String = ""
-    $baserate: numeric = ""
-    $cabmodel: String = ""
-    $cabtype: String = ""
-    $carbrand: String = ""
-    $registrationnumber: String = ""
     $driverid: String = ""
   ) {
     update_driver(
-      where: { email: { _eq: $email } }
+      where: { driverid: { _eq: $driverid } }
       _set: {
         drivername: $drivername
         driverphonenumber: $driverphonenumber
+        email: $email
         status: $status
       }
     ) {
