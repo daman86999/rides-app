@@ -3,7 +3,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import LoginSignup from '../view/LoginSignup';
 import Profile from '../view/Profile/Profile';
 import Dashboard from '../view/Dashboard';
-import DriverRides from '../view/DriverRides';
+import DriverRides from '../view/YourRides/DriverRides';
 
 export function RoutesAll({ isAuthenticated }) {
   return (
