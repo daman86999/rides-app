@@ -13,6 +13,7 @@ import { ACCEPT_RIDE } from '../queries';
 import { useAuth0 } from '@auth0/auth0-react';
 import { checkValidArray } from '../utils/validator';
 import { sendDataToSentry } from '..';
+import getdatetime from '../utils/getdatetime';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -85,8 +86,8 @@ const Dashboard = () => {
                     <div>{ride?.rideendlocation}</div>
                   </div>
                   <div className={classes.displayFlex}>
-                    <div>Ride Start time</div>
-                    <div>{ride?.ridestarttime}</div>
+                    <div>Ride Request time</div>
+                    <div>{getdatetime(ride?.riderequesttime)}</div>
                   </div>
                   <Button
                     variant="contained"

@@ -7,8 +7,9 @@ import {
   Select,
   TextField,
 } from '@material-ui/core';
-import { INSERT_CAB } from '../../queries';
+import { INSERT_CAB, UPDATE_CAB } from '../../queries';
 import { useMutation } from '@apollo/client';
+import { validateData } from '../../utils/validator';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,21 +31,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Cabs = ({ driverid }) => {
+const Cabs = ({ cab }) => {
   const classes = useStyles();
   const [cabDetails, setCabDetials] = useState({
-    baserate: '',
-    cabmodel: '',
-    cabtype: '',
-    carbrand: '',
-    registrationnumber: '',
+    baserate: cab?.baserate ?? '',
+    cabmodel: cab?.cabmodel ?? '',
+    cabtype: cab?.cabtype ?? '',
+    carbrand: cab?.carbrand ?? '',
+    registrationnumber: cab?.registrationnumber ?? '',
   });
-  const handleOnChangeforCab = (e) => {
-    const name = e.target.name;
-    const value = e.target.value;
-    setCabDetials((prev) => ({ ...prev, [name]: value }));
-  };
-  const [updateData, { error, loading }] = useMutation(INSERT_CAB);
+  const validData = validateData(cabDetails);
+  const mutationQuery = validData ? UPDATE_CAB : INSERT_CAB;
+  console.log({ validData });
+  const [updateData, { error, loading }] = useMutation(mutationQuery);
   if (error) {
     sendDataToSentry({
       name: 'GraphQL Error',
@@ -54,12 +53,16 @@ const Cabs = ({ driverid }) => {
     });
     return <div>Error!</div>;
   }
+  const handleOnChangeforCab = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    setCabDetials((prev) => ({ ...prev, [name]: value }));
+  };
   const handleUpdate = () => {
     const data = {
       ...cabDetails,
-      driverid,
+      driverid: cab?.driverid,
     };
-    // console.log({ cab: data });
     updateData({
       variables: data,
     });
@@ -147,8 +150,10 @@ const Cabs = ({ driverid }) => {
       >
         {loading ? (
           <CircularProgress style={{ color: 'white' }} />
-        ) : (
+        ) : validData ? (
           'Update Cab'
+        ) : (
+          'Insert Cab'
         )}
       </Button>
     </div>
