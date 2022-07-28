@@ -26,19 +26,6 @@ export const checkValidObject = (property) => {
   return typeof property === 'object' && Object.keys(property).length > ZERO;
 };
 
-export const checkIsUrl = (property) => {
-  const pattern = new RegExp(
-    '^(https?:\\/\\/)?' + // protocol
-      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
-      '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
-      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-      '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-      '(\\#[-a-z\\d_]*)?$',
-    'i'
-  ); // fragment locator
-  return !!pattern.test(property);
-};
-
 export const checkIfUndefined = (property) => {
   return property === undefined;
 };
@@ -46,4 +33,8 @@ export const checkIfUndefined = (property) => {
 export function capitalizeFirstLetter(string) {
   if (!string) return '';
   return string?.charAt(ZERO).toUpperCase() + string.slice(ONE)?.toLowerCase();
+}
+
+export function validateData(obj) {
+  return !Object.values(obj).some((x) => x === null || x === '');
 }
