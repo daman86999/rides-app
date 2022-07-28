@@ -110,7 +110,7 @@ const Driver = ({ driver, refetch }) => {
           margin="normal"
           fullWidth
           required
-          inputProps={{ inputmode: 'numeric', pattern: '^[0-9]{10}$' }}
+          inputProps={{ inputMode: 'numeric', pattern: '^[0-9]{10}$' }}
           id="driverphonenumber"
           name="driverphonenumber"
           onChange={handleOnChangefordriver}
