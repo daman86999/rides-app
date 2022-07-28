@@ -5,7 +5,6 @@ export const GET_DRIVER_RIDES = gql`
     driver(where: { driverid: { _eq: $driverid } }) {
       rides(order_by: { rideendtime: asc_nulls_first }) {
         id
-        ridecartyperequested
         rideendlocation
         riderequesttime
         rideendtime
