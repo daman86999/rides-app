@@ -42,7 +42,7 @@ const Cabs = ({ cab }) => {
     registrationnumber: cab?.registrationnumber ?? '',
   });
 
-  const validData = validateData(cabDetails);
+  const validData = validateData(cab);
 
   const mutationQuery = validData ? UPDATE_CAB : INSERT_CAB;
 
