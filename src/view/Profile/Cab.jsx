@@ -42,7 +42,7 @@ const Cabs = ({ cab }) => {
   });
   const validData = validateData(cabDetails);
   const mutationQuery = validData ? UPDATE_CAB : INSERT_CAB;
-  console.log({ validData });
+
   const [updateData, { error, loading }] = useMutation(mutationQuery);
   if (error) {
     sendDataToSentry({
