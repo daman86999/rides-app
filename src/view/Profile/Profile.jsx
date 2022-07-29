@@ -35,6 +35,7 @@ const Profile = () => {
   const classes = useStyles();
   const { user } = useAuth0();
   const { sub: driverid } = { ...user };
+
   const { data, error, loading, refetch } = useQuery(GET_DRIVER_INFO, {
     variables: { driverid },
   });

@@ -33,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Cabs = ({ cab }) => {
   const classes = useStyles();
+
   const [cabDetails, setCabDetials] = useState({
     baserate: cab?.baserate ?? '',
     cabmodel: cab?.cabmodel ?? '',
@@ -40,10 +41,13 @@ const Cabs = ({ cab }) => {
     carbrand: cab?.carbrand ?? '',
     registrationnumber: cab?.registrationnumber ?? '',
   });
+
   const validData = validateData(cabDetails);
+
   const mutationQuery = validData ? UPDATE_CAB : INSERT_CAB;
 
   const [updateData, { error, loading }] = useMutation(mutationQuery);
+
   if (error) {
     sendDataToSentry({
       name: 'GraphQL Error',
@@ -53,11 +57,13 @@ const Cabs = ({ cab }) => {
     });
     return <div>Error!</div>;
   }
+
   const handleOnChangeforCab = (e) => {
     const name = e.target.name;
     const value = e.target.value;
     setCabDetials((prev) => ({ ...prev, [name]: value }));
   };
+
   const handleUpdate = () => {
     const data = {
       ...cabDetails,
@@ -67,8 +73,10 @@ const Cabs = ({ cab }) => {
       variables: data,
     });
   };
+
   const { baserate, cabmodel, cabtype, carbrand, registrationnumber } =
     cabDetails;
+
   return (
     <div>
       {' '}

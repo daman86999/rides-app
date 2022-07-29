@@ -36,7 +36,9 @@ const Dashboard = () => {
   const { user } = useAuth0();
   const { sub: driverid } = user;
   const classes = useStyles();
+
   const { data, error, loading, refetch } = useQuery(GET_AVAILABLE_RIDES);
+
   const [acceptride, { loading: mutationLoading, error: mutationError }] =
     useMutation(ACCEPT_RIDE, {
       onCompleted: refetch,
