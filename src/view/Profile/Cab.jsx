@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Cabs = ({ cab }) => {
+const Cabs = ({ cab = {}, driverid, refetch }) => {
   const classes = useStyles();
 
   const [cabDetails, setCabDetials] = useState({
@@ -42,11 +42,13 @@ const Cabs = ({ cab }) => {
     registrationnumber: cab?.registrationnumber ?? '',
   });
 
-  const validData = validateData(cabDetails);
+  const validData = validateData(cab);
 
   const mutationQuery = validData ? UPDATE_CAB : INSERT_CAB;
 
-  const [updateData, { error, loading }] = useMutation(mutationQuery);
+  const [updateData, { error, loading }] = useMutation(mutationQuery, {
+    onCompleted: refetch,
+  });
 
   if (error) {
     sendDataToSentry({
@@ -67,7 +69,7 @@ const Cabs = ({ cab }) => {
   const handleUpdate = () => {
     const data = {
       ...cabDetails,
-      driverid: cab?.driverid,
+      driverid,
     };
     updateData({
       variables: data,

@@ -6,6 +6,7 @@ import Driver from './Driver';
 import Cabs from './Cab';
 import { GET_DRIVER_INFO } from '../../queries';
 import { useQuery } from '@apollo/client';
+import { sendDataToSentry } from '../..';
 
 const useStyles = makeStyles((theme) => ({
   root2: {
@@ -34,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 const Profile = () => {
   const classes = useStyles();
   const { user } = useAuth0();
-  const { sub: driverid } = { ...user };
+  const { sub: driverid } = user;
 
   const { data, error, loading, refetch } = useQuery(GET_DRIVER_INFO, {
     variables: { driverid },
@@ -71,7 +72,7 @@ const Profile = () => {
               Profile
             </Typography>
             <Driver driver={driver} refetch={refetch} />
-            <Cabs cab={cab} refetch={refetch} />
+            <Cabs cab={cab} driverid={driverid} refetch={refetch} />
           </div>
         </Grid>
       </Grid>

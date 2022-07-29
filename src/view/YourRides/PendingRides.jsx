@@ -1,6 +1,7 @@
 import { useMutation } from '@apollo/client';
 import { Button, Card, CircularProgress } from '@material-ui/core';
 import React from 'react';
+import { sendDataToSentry } from '../..';
 import { START_RIDE } from '../../queries';
 import getdatetime from '../../utils/getdatetime';
 import { checkValidArray } from '../../utils/validator';
