@@ -37,7 +37,9 @@ const Dashboard = () => {
   const { sub: driverid } = user;
   const classes = useStyles();
 
-  const { data, error, loading, refetch } = useQuery(GET_AVAILABLE_RIDES);
+  const { data, error, loading, refetch } = useQuery(GET_AVAILABLE_RIDES, {
+    pollInterval: 3500,
+  });
 
   const [acceptride, { loading: mutationLoading, error: mutationError }] =
     useMutation(ACCEPT_RIDE, {
