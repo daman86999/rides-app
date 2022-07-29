@@ -55,7 +55,6 @@ const Profile = () => {
 
   const driver = data?.driver?.[0];
   const cab = data?.driver?.[0]?.cab?.[0];
-  console.log({ data, driver, cab });
 
   return (
     <div className={classes.root}>
