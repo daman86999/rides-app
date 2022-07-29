@@ -9,6 +9,7 @@ import {
 } from '@material-ui/core';
 import { useMutation } from '@apollo/client';
 import { UPDATE_DRIVER } from '../../queries/UPDATE_DRIVER';
+import { sendDataToSentry } from '../..';
 
 const useStyles = makeStyles((theme) => ({
   root: {
