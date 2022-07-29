@@ -11,4 +11,5 @@ const createApolloClient = () => {
     cache: new InMemoryCache(),
   });
 };
+
 export default createApolloClient;

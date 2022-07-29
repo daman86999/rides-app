@@ -8,7 +8,6 @@ const LoginButton = () => {
     <Button
       variant="contained"
       color="primary"
-      // className={classes.submit}
       onClick={() => loginWithRedirect()}
     >
       Log In & Signup

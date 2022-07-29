@@ -14,6 +14,7 @@ export default function App() {
   }
 
   const client = Connection();
+
   return (
     <ApolloProvider client={client}>
       <div>
