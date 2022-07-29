@@ -36,5 +36,7 @@ export function capitalizeFirstLetter(string) {
 }
 
 export function validateData(obj) {
-  return !Object.values(obj).some((x) => x === null || x === '');
+  return checkValidObject(obj)
+    ? !Object.values(obj).some((x) => x === null || x === '')
+    : false;
 }

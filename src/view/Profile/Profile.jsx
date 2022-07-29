@@ -71,7 +71,7 @@ const Profile = () => {
               Profile
             </Typography>
             <Driver driver={driver} refetch={refetch} />
-            <Cabs cab={cab} refetch={refetch} />
+            <Cabs cab={cab} driverid={driverid} refetch={refetch} />
           </div>
         </Grid>
       </Grid>
