@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Navbar = () => {
   const classes = useStyles();
-  if (window.location.pathname === '/login') {
+  if (window.location.pathname.indexOf('/login') > -1) {
     return null;
   }
   return (
