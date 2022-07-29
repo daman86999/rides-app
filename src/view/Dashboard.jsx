@@ -99,7 +99,7 @@ const Dashboard = () => {
                     className={classes.submit}
                     onClick={() => handleAccept(ride?.id)}
                   >
-                    {mutationLoading ? (
+                    {!exprired(ride?.riderequesttime) && mutationLoading ? (
                       <CircularProgress style={{ color: 'white' }} />
                     ) : exprired(ride?.riderequesttime) ? (
                       'Expired'
