@@ -63,6 +63,9 @@ const Dashboard = () => {
     });
   };
 
+  const exprired = (riderequesttime) =>
+    riderequesttime < new Date(Date.now()).toISOString();
+
   return (
     <Grid container direction="column" className={classes.root}>
       <Grid item>
@@ -92,11 +95,14 @@ const Dashboard = () => {
                   <Button
                     variant="contained"
                     color="primary"
+                    disabled={exprired(ride?.riderequesttime)}
                     className={classes.submit}
                     onClick={() => handleAccept(ride?.id)}
                   >
                     {mutationLoading ? (
                       <CircularProgress style={{ color: 'white' }} />
+                    ) : exprired(ride?.riderequesttime) ? (
+                      'Expired'
                     ) : (
                       'Accept'
                     )}
