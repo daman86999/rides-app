@@ -30,12 +30,15 @@ const DriverRides = () => {
   const { user } = useAuth0();
   const { sub: driverid } = user;
   const classes = useStyles();
+
   const { data, error, loading, refetch } = useQuery(GET_DRIVER_RIDES, {
     variables: { driverid },
   });
+
   if (loading) {
     return <CircularProgress />;
   }
+
   if (error) {
     sendDataToSentry({
       name: 'GraphQL Error',
@@ -45,12 +48,15 @@ const DriverRides = () => {
     });
     return <div>Error!</div>;
   }
+
   const pendingRides = data?.driver?.[0].rides?.filter((ride) => {
     if (!ride?.ridestarttime && !ride?.rideendtime) return true;
   });
+
   const activeRides = data?.driver?.[0].rides?.filter((ride) => {
     if (ride?.ridestarttime && !ride?.rideendtime) return true;
   });
+
   const completedRides = data?.driver?.[0].rides?.filter((ride) => {
     if (ride?.rideendtime) return true;
   });
